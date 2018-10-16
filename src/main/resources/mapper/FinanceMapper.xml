@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.finance.lottery.dao.FinanceDao">
+
+	<resultMap id="BaseResultMap" type="com.finance.lottery.module.Finance" >
+		<id column="sys_no" property="sysNo" jdbcType="BIGINT" />
+		<result column="number" property="number" jdbcType="SMALLINT"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="ts" property="ts" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+
+		sys_no, number, create_time, ts
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		Select <include refid="Base_Column_List" />
+		from finance
+		where sys_no = #{sysNo,jdbcType=BIGINT}
+		 AND sharding_flag in
+		 <foreach item="shardingFlag1" collection="shardingFlag"  open="(" separator="," close=")">
+				 #{shardingFlag1,jdbcType=VARCHAR}
+		 </foreach>
+	</select>
+
+	<select id="selectByPrimaryKeySingle" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		Select <include refid="Base_Column_List" />
+		from finance
+		where sys_no = #{sysNo,jdbcType=BIGINT}
+		 AND sharding_flag = #{shardingFlag,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert" parameterType="com.zeus.model.inv.Finance">
+		INSERT INTO finance (sys_no, number,create_time,ts)
+		VALUES ( #{sysNo,jdbcType=VARCHAR},  #{number,jdbcType=SMALLINT},Now(),
+			Now()	)
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.util.HashMap">
+		Delete from finance where sys_no = #{sysNo,jdbcType=BIGINT}
+		 AND sharding_flag in
+		 <foreach item="shardingFlag1" collection="shardingFlag"  open="(" separator="," close=")">
+				 #{shardingFlag1,jdbcType=VARCHAR}
+		 </foreach>
+	</delete>
+
+	<update id="updateByPrimaryKey" parameterType="com.zeus.model.inv.Finance">
+		update finance
+			Set number = #{number,jdbcType=SMALLINT},
+				ts = Now()
+		Where sys_no = #{sysNo,jdbcType=BIGINT}
+		 AND sharding_flag = #{shardingFlag,jdbcType=VARCHAR}
+ 	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.zeus.model.inv.Finance">
+		update finance
+			Set 
+				<if test="number != null">
+				number = #{number,jdbcType=SMALLINT},
+				</if>
+								ts = Now()
+		Where sys_no = #{sysNo,jdbcType=BIGINT}
+		 AND sharding_flag = #{shardingFlag,jdbcType=VARCHAR}
+ 	</update>
+
+	<select id="selectList" parameterType="com.zeus.model.inv.Finance" resultMap="BaseResultMap">
+		Select <include refid="Base_Column_List" />
+		from finance
+		where Yn = 'Y'
+		<include refid="queryCondition"/>
+	</select>
+
+	<insert id="batchInsert">
+		INSERT INTO finance (
+		<include refid="insert_all_columns"/>
+		)values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+		<include refid="batch_insert_values"/>
+		)
+		</foreach>
+	</insert>
+	<sql id="insert_all_columns">
+		sys_no, number,create_time,ts
+	</sql>
+	<sql id="batch_insert_values">
+		 #{item.sysNo,jdbcType=VARCHAR},  #{item.number,jdbcType=SMALLINT},Now(),
+			Now()
+	</sql>
+
+	<select id="queryForList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+			SELECT
+			<include refid="Base_Column_List" />
+			FROM finance
+			WHERE Yn = 'Y'
+			<include refid="pageQueryCondition"/>
+			order by create_time desc
+		limit #{startRow}, #{pageSize}
+	</select>
+
+	<select id="queryForCount" parameterType="java.util.HashMap" resultType="java.lang.Long">
+		SELECT Count(sys_no)
+		FROM finance
+		WHERE Yn = 'Y'
+		<include refid="pageQueryCondition"/>
+	</select>
+
+	<sql id="queryCondition">
+		<if test="sysNo != null and sysNo != '' ">
+			and sys_no = #{sysNo,jdbcType=BIGINT}
+		</if>
+		<if test="number != null and number != '' ">
+			and number = #{number,jdbcType=SMALLINT}
+		</if>
+		<if test="createTime != null and createTime != '' ">
+			and create_time = #{createTime,jdbcType=DATE}
+		</if>
+		<if test="ts != null and ts != '' ">
+			and ts = #{ts,jdbcType=DATE}
+		</if>
+	</sql>
+	<sql id="pageQueryCondition">
+		<if test="sysNo != null and sysNo != '' ">
+			and sys_no = #{sysNo,jdbcType=BIGINT}
+		</if>
+		<if test="number != null and number != '' ">
+			and number = #{number,jdbcType=SMALLINT}
+		</if>
+		<if test="numberFrom != null and numberFrom != '' ">
+			and number >= #{numberFrom,jdbcType=SMALLINT}
+		</if>
+		<if test="numberTo != null and numberTo != '' ">
+			and number &lt;= #{numberTo,jdbcType=SMALLINT}
+		</if>
+		<if test="createTime != null and createTime != '' ">
+			and create_time = #{createTime,jdbcType=DATE}
+		</if>
+		<if test="createTimeFrom != null and createTimeFrom != '' ">
+			and create_time >= #{createTimeFrom,jdbcType=DATE}
+		</if>
+		<if test="createTimeTo != null and createTimeTo != '' ">
+			and create_time &lt;= #{createTimeTo,jdbcType=DATE}
+		</if>
+		<if test="ts != null and ts != '' ">
+			and ts = #{ts,jdbcType=DATE}
+		</if>
+		<if test="tsFrom != null and tsFrom != '' ">
+			and ts >= #{tsFrom,jdbcType=DATE}
+		</if>
+		<if test="tsTo != null and tsTo != '' ">
+			and ts &lt;= #{tsTo,jdbcType=DATE}
+		</if>
+	</sql>
+
+</mapper>
