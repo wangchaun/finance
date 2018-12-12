@@ -16,14 +16,56 @@ import java.io.FileOutputStream;
  **/
 
 public class PdfController {
-    private static final String FILE_DIR = "/Users/wangsiming/Desktop/危险废物管理计划-2018年";
+    private static final String FILE_DIR = "/Users/wangsiming/Desktop/";
 
 
     public static void main(String[] args) throws Exception {
 
-        qieFY(4);
+//        qieFY(4);
+
+        combine("/Users/wangsiming/Desktop/发货清单.pdf","/Users/wangsiming/Desktop/发货清单.pdf");
+    }
+
+    /**
+     *
+     * 功能描述: 将file2合并到file1
+     *
+     * @param: 
+     * @return: 
+     * @auther: siming.wang
+     * @date: 18/12/12 下午4:35
+     */
+    public static void combine(String file1, String file2) throws Exception{
+        PdfReader reader1 = new PdfReader(file1);
+        PdfReader reader2 = new PdfReader(file2);
+
+        int pageTotal1 = reader1.getNumberOfPages();
+        int pageTotal2 = reader2.getNumberOfPages();
+
+
+        Document oddDoc = new Document();
+        PdfWriter writer = PdfWriter.getInstance(oddDoc, new FileOutputStream(FILE_DIR+"combine.pdf"));
+        oddDoc.open();
+        PdfContentByte cb = writer.getDirectContent();
+
+        for(int i = 0; i<pageTotal1; i++){
+            oddDoc.newPage();
+            cb.addTemplate(writer.getImportedPage(reader1, i+1), 0, 0);
+
+        }
+        for(int i = 0; i<pageTotal2; i++){
+            oddDoc.newPage();
+            cb.addTemplate(writer.getImportedPage(reader2, i+1), 0, 0);
+
+        }
+
+        oddDoc.close();
+        writer.close();
 
     }
+
+
+
 
     /**
      * 切分页
