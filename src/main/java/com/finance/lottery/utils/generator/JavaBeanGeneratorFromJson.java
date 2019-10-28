@@ -1,11 +1,11 @@
 package com.finance.lottery.utils.generator;
 
-import com.zeus.common.util.DateUtils;
-import com.zeus.enuclearRelease.generator.GenModel.JsonSingleModelVO;
-import com.zeus.enuclearRelease.generator.util.PathUtil;
-import com.zeus.enuclearRelease.generator.util.ReadJsonUtil;
-import com.zeus.enuclearRelease.generator.util.StringUtil;
+import com.finance.lottery.utils.generator.GenModel.JsonSingleModelVO;
+import com.finance.lottery.utils.generator.util.PathUtil;
+import com.finance.lottery.utils.generator.util.ReadJsonUtil;
+import com.finance.lottery.utils.generator.util.StringUtil;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -30,8 +30,9 @@ public class JavaBeanGeneratorFromJson {
 
     private static void generaModelByModel(JsonSingleModelVO jsonSingleModelVO) throws Exception{
 
-        String nowDateTime  =  DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-        String file = PathUtil.getProjectPath()+"/src/main/java/com/zeus/enuclearRelease/generator/out/"+ jsonSingleModelVO.getClassName() +".java";
+//        String nowDateTime  =  DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+        String nowDateTime  =  "123";
+        String file = PathUtil.getProjectPath()+"/src/main/java/com/finance/lottery/utils/generator/out/"+ jsonSingleModelVO.getClassName() +".java";
 
         String beanPropertyList = "" ;
         String getsetList = "" ;

@@ -1,0 +1,21 @@
+{
+
+
+    "order_number" : "P52008",
+    "date_key" : "2017-11-25",
+    "creator" : "吴倩",
+    "provider" : "003001392",
+    "provider_name" : "测试 FOB 全款",
+    "delivery_time" : "2017-11-28",
+    "purchase_form_weight" : 14450.4,
+    "sku_score_list" : [
+        {
+            "skucode" : "93232180",
+            "purchase_total" : 100,
+            "arrive_total" : 0,
+            "sku_weight" : 14450.4
+        }
+    ],
+    "purchase_score" : 50.0,
+    "last_status" : 8
+}

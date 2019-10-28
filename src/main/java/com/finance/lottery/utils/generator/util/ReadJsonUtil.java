@@ -42,7 +42,7 @@ public class ReadJsonUtil {
             String jsonStr;
 
             jsonStr = FileUtils.readFileToString(new File(
-                        PathUtil.getProjectPath() + "/src/main/java/com/zeus/enuclearRelease/generator/util/json.txt"));
+                        PathUtil.getProjectPath() + "/src/main/java/com/finance/lottery/utils/generator/util/json.txt"));
 
             JSONObject jsonObject = JSON.parseObject(jsonStr);
 
